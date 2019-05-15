@@ -1,0 +1,44 @@
+tabela .table-column {
+  -fx-alignment: CENTER-RIGHT;
+}
+
+.titulo{
+   -fx-text-fill: #4CAF50;
+}
+.fundo{
+    -fx-background-color: #575757;
+}
+.pane{
+    -fx-background-radius: 10;
+    -fx-background-color: #dfdfdf;
+}
+
+.button{
+    -fx-background-color: #dfdfdf;
+    -fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-background-radius: 10;
+}
+
+.button:hover {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+}
+
+.button:default:hover {
+    -fx-background-color: derive(-fx-focus-color,30%);
+}
+
+.button:pressed, .button:default:hover:pressed {
+    -fx-background-color: white;
+    -fx-text-fill: #1d1d1d;
+}
+
+.text-field {
+    -fx-border-radius: 20;  
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: black;
+    -fx-background-color: #d4d4d4;
+    -fx-border-color: black;
+}
