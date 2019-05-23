@@ -137,7 +137,7 @@ public class CamadaOculta {
             if (i == indexSaida) {
                 total = 1 - saida[i];
             } else {
-                total = 1 - saida[i];
+                total = 0 - saida[i];
             }
             erro[i] = func_ati.funcao_ativacao_der(saida[i], total, tp_act);
         }

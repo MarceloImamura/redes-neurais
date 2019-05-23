@@ -28,6 +28,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
@@ -44,8 +45,6 @@ public class FXMLDocumentController implements Initializable {
     private CarregaDS carrega;
     @FXML
     private LineChart<ObservableList, String> graficoE;
-    @FXML
-    private Canvas canvas;
     @FXML
     private TableView<ObservableList<String>> tabela;
     @FXML
@@ -94,6 +93,8 @@ public class FXMLDocumentController implements Initializable {
     private Tab tabelaK;
     @FXML
     private TableView<?> tabela1;
+    @FXML
+    private TextArea txConfNormal;
     
 
     @Override
@@ -144,8 +145,8 @@ public class FXMLDocumentController implements Initializable {
                 insert(diretorio);
                 btTeste.setDisable(false);
 
-                //System.out.println(rn.getSaidaString());
-                //System.out.println(rn.stringArquitura());
+                txEntrada.setText(""+carrega.getIentradas());
+                txSaida.setText(""+carrega.getIsaida());
             }
         }
     }
@@ -303,7 +304,12 @@ public class FXMLDocumentController implements Initializable {
         double txApredizagem = Double.parseDouble(txAprendizagem.getText());
         double epoca = Double.parseDouble(txItera.getText());
         carrega.normalizar();
+        carrega.randonDS();
+        pbIteracoes.setProgress(0.0);
+        pbTeste.setProgress(0.0);
         rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
+        rn.setTpSaidas(carrega.getTpSaidas());
+        
         new Thread() {
 
             @Override
@@ -313,12 +319,23 @@ public class FXMLDocumentController implements Initializable {
                         pbIteracoes.setProgress(i / epoca);
                         //Epoca, Camada,tp_act,taxaA
                         rn.treinar(carrega.getDataset(), carrega.getDsTeste(), tp_act, txApredizagem);
-                        Thread.sleep(100);
+                        Thread.sleep(5);
 
                     }
-                    btExibe.setVisible(true);
+                    
                     pbIteracoes.setProgress(1.0);
-
+                    rn.iniciarTeste();
+                    
+                    double iTeste = Double.parseDouble(""+carrega.getDsTeste().size());
+                    for (int i = 0; i < carrega.getDsTeste().size(); i++) {
+                        rn.testar(carrega.getDsTeste().get(i),tp_act);
+                        pbTeste.setProgress(i/iTeste);
+                        Thread.sleep(5);
+                    }
+                    
+                    pbTeste.setProgress(1.0);
+                    btExibe.setVisible(true);
+                    
                 } catch (Exception ex) {
                     System.out.println("Erro: " + ex.getMessage());
                 }
@@ -330,9 +347,11 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void evtExibe(ActionEvent event) {
-        graficoE.getData().clear();
+        txConfNormal.setText(rn.exibeMatriz());
+        //graficoE.getData().clear();
         
         XYChart.Series series = new XYChart.Series();
+        series.setName("Teste");
         ArrayList erros = rn.getLogErro();
         
         for (int i = 0; i < erros.size(); i++) {
@@ -372,8 +391,7 @@ public class FXMLDocumentController implements Initializable {
                 btTreinar.setDisable(false);
                 tabTeste.setDisable(false);
                 flagTeste = true;
-                //System.out.println(rn.getSaidaString());
-                //System.out.println(rn.stringArquitura());
+                
             }
         }
     }

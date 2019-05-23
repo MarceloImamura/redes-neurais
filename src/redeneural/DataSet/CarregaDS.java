@@ -23,6 +23,16 @@ public class CarregaDS {
     ArrayList<Double> maior;
     private int ientradas, isaida;
 
+    public ArrayList<String> getTpSaidas() {
+        return tpSaidas;
+    }
+
+    public void setTpSaidas(ArrayList<String> tpSaidas) {
+        this.tpSaidas = tpSaidas;
+    }
+    
+    
+    
     public ArrayList<DataSet> getDataset() {
         return dataset;
     }
@@ -47,17 +57,6 @@ public class CarregaDS {
         return tpSaidas.size();
     }
     
-
-    public void addTreino(DataSet ds, ArrayList<DataSet> lista) {
-        Random random = new Random();
-        if (lista.size() == 0) {
-            lista.add(ds);
-        } else {
-            int index = random.nextInt(lista.size());
-            lista.add(index, ds);
-        }
-
-    }
 
     public int addDatasetSaida(String saida) {
         boolean flag = true;
@@ -165,8 +164,6 @@ public class CarregaDS {
                         for (int i = 0; i < var.length - 1; i++) {
                             valor = Double.parseDouble(var[i]);
                             
-                            if(valor == 0.7545909849749584)
-                                System.out.println("arroz");
                             if (maior.size() < ientradas) {
                                 maior.add(valor);
                                 menor.add(valor);
@@ -188,7 +185,7 @@ public class CarregaDS {
 
                     ds.setSaida(addDatasetSaida(var[var.length - 1]));
                     ds.setS(var[var.length - 1]);
-                    addTreino(ds,lista);
+                    //addTreino(ds,lista);
                     lista.add(ds);
                 } else {// nao possui tam
                     flag = false;
@@ -206,7 +203,6 @@ public class CarregaDS {
         return lista;
     }
     
-    
     public void normalizar(){
         double v;
         for (DataSet ds : dataset) {
@@ -214,6 +210,9 @@ public class CarregaDS {
                 v = ds.getEntrada().get(i);
                 v = (v - menor.get(i))/(maior.get(i)-menor.get(i));
                 if(v>1){
+                    System.out.println("Erro: "+v+" Valor Entrada: "+ds.getEntrada().get(i)+" maior: "+maior.get(i)+" coluna: "+i);
+                }
+                if(v<-1){
                     System.out.println("Erro: "+v+" Valor Entrada: "+ds.getEntrada().get(i)+" maior: "+maior.get(i)+" coluna: "+i);
                 }
                 ds.getEntrada().set(i, v);
@@ -227,5 +226,25 @@ public class CarregaDS {
                 d.getEntrada().set(i, v);
             }
         }
+    }
+    
+    public void randonDS(){
+        dataset = randomDS(dataset);
+    }
+    
+    public ArrayList<DataSet> randomDS(ArrayList<DataSet> lista){
+        ArrayList<DataSet> aux  = new ArrayList();
+        
+        for (DataSet ds : lista) {
+            Random random = new Random();
+            if (aux.size() == 0) {
+                aux.add(ds);
+            } else {
+                int index = random.nextInt(aux.size());
+                aux.add(index, ds);
+            }
+        }
+        
+        return aux;
     }
 }

@@ -7,7 +7,8 @@ public class Rede {
 
     private ArrayList<Double> logErro;
     private ArrayList<CamadaOculta> rede;
-
+    private ArrayList<String> tpSaidas;
+    private int[][] mConfusao;
     private double redeErro;
     private int ientradas, icamadas, isaida, ineuronioOculto;
 
@@ -23,6 +24,25 @@ public class Rede {
         System.out.println(text);
     }
 
+    public String exibeMatriz(){
+        String exibe = "\t";
+        
+        for (int i = 0; i < isaida; i++) {
+            exibe += tpSaidas.get(i)+"\t";
+        }
+        exibe+="\n";
+        for (int i = 0; i < isaida; i++) {
+            exibe+=tpSaidas.get(i)+"\t";
+            for (int j = 0; j < isaida; j++) {
+                exibe += mConfusao[i][j]+ "\t";
+            }
+            exibe+="\n";
+        }
+        
+        
+        return exibe;
+    }
+    
     public void iniciar(int ientradas, int icamadas, int saida) {
         logErro = new ArrayList();
         this.icamadas = icamadas + 1;
@@ -42,7 +62,10 @@ public class Rede {
         co = new CamadaOculta(ineuronioOculto, isaida);
         rede.add(co);
     }
-
+    
+    public void iniciarTeste(){
+        mConfusao = new int[isaida][isaida];
+    }
     //----------------------------iniciar-----------------------------------
     public int getIcamadas() {
         return icamadas;
@@ -87,6 +110,16 @@ public class Rede {
     public void setRede(ArrayList<CamadaOculta> rede) {
         this.rede = rede;
     }
+
+    public ArrayList<String> getTpSaidas() {
+        return tpSaidas;
+    }
+
+    public void setTpSaidas(ArrayList<String> tpSaidas) {
+        this.tpSaidas = tpSaidas;
+    }
+    
+    
 
     //------------------------BUSCA ETC...-----------------------
     public double[] arrayTovetor(ArrayList<Double> lista) {
@@ -168,5 +201,34 @@ public class Rede {
 
         logErro.add(redeErro);
 
+    }
+    
+    
+    public int maior_saida(){
+        CamadaOculta oc;
+        double total = 0;
+        int i = 0;
+        oc = rede.get(icamadas - 1);//pegar o ultimo
+        
+        total = oc.getSaida()[0];
+        
+        for (int j = 1; j < oc.getSaida().length; j++) {
+            if(oc.getSaida()[j]>total){
+                i = j;
+                total = oc.getSaida()[j];
+            }
+        }
+        
+        return i;
+    }
+    
+    public void testar(DataSet ds,int tp_act){
+        int saida, desejado;
+        desejado = ds.getSaida();
+        double[] entrada= arrayTovetor(ds.getEntrada());
+        testarRede(entrada, tp_act);
+        saida = maior_saida();
+        mConfusao[desejado][saida]++;
+        
     }
 }

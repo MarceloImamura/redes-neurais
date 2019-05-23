@@ -12,7 +12,7 @@ package redeneural.Rede;
 public class Func_ativacao {
     
     public double linear(double net) {
-        return net / 2.0;
+        return net / 10.0;
     }
     
     public double logistica(double net) {
@@ -36,7 +36,7 @@ public class Func_ativacao {
     
     public double funcao_ativacao_der(double net, double total, int tp_act) {
         if (tp_act == 0) {
-            return total * 0.5;
+            return total * 0.1;
         } else if (tp_act == 1) {
             return total * (net * (1 - net));
         } else {
