@@ -1,11 +1,11 @@
-package redeneural.Rede;
+package redeneural.DataSet;
 
 import java.util.ArrayList;
 
 public class DataSet {
-    ArrayList<Double> entrada;
+    private ArrayList<Double> entrada;
     int saida;
-
+    String s;
     public DataSet() {
         entrada = new ArrayList();
     }
@@ -14,9 +14,10 @@ public class DataSet {
         this.entrada.add(entrada);
     }
 
-    public DataSet(ArrayList<Double> entrada, int saida) {
+    public DataSet(ArrayList<Double> entrada, int saida, String s) {
         this.entrada = entrada;
         this.saida = saida;
+        this.s= s;
     }
 
     public void setSaida(int saida) {
@@ -29,6 +30,14 @@ public class DataSet {
 
     public int getSaida() {
         return saida;
+    }
+
+    public String getS() {
+        return s;
+    }
+
+    public void setS(String s) {
+        this.s = s;
     }
     
     

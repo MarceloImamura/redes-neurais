@@ -31,6 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
+import redeneural.DataSet.CarregaDS;
 import redeneural.Rede.Rede;
 
 /**
@@ -40,6 +41,7 @@ import redeneural.Rede.Rede;
 public class FXMLDocumentController implements Initializable {
     private boolean flagTeste;
     private Rede rn;
+    private CarregaDS carrega;
     @FXML
     private LineChart<ObservableList, String> graficoE;
     @FXML
@@ -65,8 +67,6 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private Tab tabTeste;
     @FXML
-    private TextField txErro;
-    @FXML
     private TextField txItera;
     @FXML
     private Tab tabExe;
@@ -86,10 +86,19 @@ public class FXMLDocumentController implements Initializable {
     private Tab tabK;
     @FXML
     private TableView<ObservableList<String>> tabelaTeste;
+    @FXML
+    private TextField txAprendizagem;
+    @FXML
+    private Canvas canvas1;
+    @FXML
+    private Tab tabelaK;
+    @FXML
+    private TableView<?> tabela1;
     
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        carrega = new CarregaDS();
         rn = new Rede();
         tabK.setDisable(true);
         flagTeste = false;
@@ -98,9 +107,9 @@ public class FXMLDocumentController implements Initializable {
         btTreinar.setDisable(true);
         txEntrada.setDisable(true);
 
-        txErro.setText("0.0001");
-        txItera.setText("100");
-
+        txAprendizagem.setText("0.1");
+        txItera.setText("25");
+        txOculta.setText("1");
         txSaida.setDisable(true);
         txOculta.requestFocus();
 
@@ -109,6 +118,7 @@ public class FXMLDocumentController implements Initializable {
         tabTeste.setDisable(true);
 
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tabelaTeste.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btExibe.setVisible(false);
     }
 
@@ -130,10 +140,8 @@ public class FXMLDocumentController implements Initializable {
             String diretorio = selectedFile.getAbsolutePath();
             diretorio = diretorio.replace("\\", "/");
 
-            if (rn.verifica(diretorio)) {
-
+            if (carrega.carregaTreinamento(diretorio)) {
                 insert(diretorio);
-                rn.iniciar(1);
                 btTeste.setDisable(false);
 
                 //System.out.println(rn.getSaidaString());
@@ -210,6 +218,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
+    
     public void insertTeste(String dir) {
         tabelaTeste.getColumns().clear();
         List<String> columns = new ArrayList<String>();
@@ -289,21 +298,21 @@ public class FXMLDocumentController implements Initializable {
         } else {
             tp_act = 2;
         }
-
-        double epoca = Double.parseDouble(txItera.getText());
         
-
+        int camadas = Integer.parseInt(txOculta.getText());
+        double txApredizagem = Double.parseDouble(txAprendizagem.getText());
+        double epoca = Double.parseDouble(txItera.getText());
+        carrega.normalizar();
+        rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
         new Thread() {
 
             @Override
             public void run() {
                 try {
-                    int index = 0;
                     for (int i = 0; i < epoca; i++) {
-
                         pbIteracoes.setProgress(i / epoca);
                         //Epoca, Camada,tp_act,taxaA
-                        rn.treinar(tp_act, 0.1);
+                        rn.treinar(carrega.getDataset(), carrega.getDsTeste(), tp_act, txApredizagem);
                         Thread.sleep(100);
 
                     }
@@ -321,6 +330,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void evtExibe(ActionEvent event) {
+        graficoE.getData().clear();
+        
         XYChart.Series series = new XYChart.Series();
         ArrayList erros = rn.getLogErro();
         
@@ -355,7 +366,7 @@ public class FXMLDocumentController implements Initializable {
             String diretorio = selectedFile.getAbsolutePath();
             diretorio = diretorio.replace("\\", "/");
 
-            if (rn.verifica_teste(diretorio)) {
+            if (carrega.carregaTeste(diretorio)) {
 
                 insertTeste(diretorio);
                 btTreinar.setDisable(false);

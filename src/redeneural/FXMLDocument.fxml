@@ -55,8 +55,8 @@
                         <Button fx:id="btTeste" layoutX="870.0" layoutY="94.0" mnemonicParsing="false" onAction="#evtCarregaTeste" prefHeight="29.0" prefWidth="122.0" style="-fx-border-radius: 3px;" text="Carrega Teste" />
                         <Pane layoutX="373.0" layoutY="17.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
                            <children>
-                              <Label layoutX="10.0" layoutY="10.0" text="Valor do Erro:" />
-                              <TextField fx:id="txErro" layoutX="85.0" layoutY="27.0" prefHeight="32.0" prefWidth="106.0" />
+                              <Label layoutX="10.0" layoutY="10.0" text="Taxa de Apredizagem" />
+                              <TextField fx:id="txAprendizagem" layoutX="85.0" layoutY="27.0" prefHeight="32.0" prefWidth="106.0" />
                            </children>
                         </Pane>
                         <Pane layoutX="373.0" layoutY="128.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
@@ -118,24 +118,32 @@
                               </HBox>
                            </content>
                       </Tab>
-                        <Tab text="DataSet">
-                           <content>
-                              <TableView fx:id="tabela" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </Tab>
-                        <Tab fx:id="tabTeste" text="Teste">
-                           <content>
-                              <TableView fx:id="tabelaTeste" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </Tab>
                     </tabs>
                   </TabPane>
                </content>
           </Tab>
           <Tab fx:id="tabK" text="K fould">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
+               <content>
+                  <TabPane prefHeight="788.0" prefWidth="1249.0" tabClosingPolicy="UNAVAILABLE">
+                     <tabs>
+                        <Tab text="Erro" />
+                        <Tab text="Confusão">
+                           <content>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <Canvas fx:id="canvas1" height="329.0" width="753.0" />
+                                 </children>
+                              </HBox>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="tabelaK" text="DataSet">
+                           <content>
+                              <TableView fx:id="tabela1" prefHeight="200.0" prefWidth="200.0" />
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
+               </content>
           </Tab>
             <Tab fx:id="tabExe" text="Execução">
                <content>
@@ -152,6 +160,16 @@
                         </VBox>
                      </children>
                   </VBox>
+               </content>
+            </Tab>
+            <Tab text="DataSet">
+               <content>
+                  <TableView fx:id="tabela" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="tabTeste" text="Teste">
+               <content>
+                  <TableView fx:id="tabelaTeste" prefHeight="200.0" prefWidth="200.0" />
                </content>
             </Tab>
         </tabs>
