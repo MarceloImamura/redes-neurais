@@ -87,7 +87,7 @@
                         <Pane layoutX="657.0" layoutY="123.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Randomizar" />
-                              <CheckBox fx:id="ckFould1" layoutX="65.0" layoutY="35.0" mnemonicParsing="false" onAction="#evtFould" text="Randon DataSet" />
+                              <CheckBox fx:id="ckRandon" layoutX="65.0" layoutY="35.0" mnemonicParsing="false" text="Randon DataSet" />
                            </children>
                         </Pane>
                      </children>

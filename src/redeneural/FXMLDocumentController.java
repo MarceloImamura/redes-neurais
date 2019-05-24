@@ -33,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
 import redeneural.DataSet.CarregaDS;
+import redeneural.DataSet.DataSet;
 import redeneural.Rede.Rede;
 
 /**
@@ -95,6 +96,8 @@ public class FXMLDocumentController implements Initializable {
     private TableView<?> tabela1;
     @FXML
     private TextArea txConfNormal;
+    @FXML
+    private CheckBox ckRandon;
     
 
     @Override
@@ -140,7 +143,7 @@ public class FXMLDocumentController implements Initializable {
         if (selectedFile != null) {
             String diretorio = selectedFile.getAbsolutePath();
             diretorio = diretorio.replace("\\", "/");
-
+            carrega = new CarregaDS();
             if (carrega.carregaTreinamento(diretorio)) {
                 insert(diretorio);
                 btTeste.setDisable(false);
@@ -303,13 +306,34 @@ public class FXMLDocumentController implements Initializable {
         int camadas = Integer.parseInt(txOculta.getText());
         double txApredizagem = Double.parseDouble(txAprendizagem.getText());
         double epoca = Double.parseDouble(txItera.getText());
-        carrega.normalizar();
-        carrega.randonDS();
+        ArrayList<DataSet> ds;
+        ArrayList<DataSet> teste;
+        
+        if(!carrega.isNormalizado())
+            carrega.normalizar();
+        
+        if(ckRandon.isSelected()){
+            ds = carrega.randomDS(carrega.getDataset());
+            teste = carrega.randomDS(carrega.getDsTeste());
+        }else{
+            ds = carrega.getDataset();
+            teste = carrega.getDsTeste();
+        }
+        
+        
         pbIteracoes.setProgress(0.0);
         pbTeste.setProgress(0.0);
         rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
         rn.setTpSaidas(carrega.getTpSaidas());
         
+        if(ckFould.isSelected()){
+            
+        }else{
+            treino_N(epoca, txApredizagem, tp_act, ds, teste);
+        }
+    }
+    
+    public void treino_N(double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> ds,ArrayList<DataSet> teste ){
         new Thread() {
 
             @Override
@@ -318,7 +342,7 @@ public class FXMLDocumentController implements Initializable {
                     for (int i = 0; i < epoca; i++) {
                         pbIteracoes.setProgress(i / epoca);
                         //Epoca, Camada,tp_act,taxaA
-                        rn.treinar(carrega.getDataset(), carrega.getDsTeste(), tp_act, txApredizagem);
+                        rn.treinar(ds, teste, tp_act, txApredizagem);
                         Thread.sleep(5);
 
                     }
@@ -326,9 +350,9 @@ public class FXMLDocumentController implements Initializable {
                     pbIteracoes.setProgress(1.0);
                     rn.iniciarTeste();
                     
-                    double iTeste = Double.parseDouble(""+carrega.getDsTeste().size());
-                    for (int i = 0; i < carrega.getDsTeste().size(); i++) {
-                        rn.testar(carrega.getDsTeste().get(i),tp_act);
+                    double iTeste = Double.parseDouble(""+teste.size());
+                    for (int i = 0; i < teste.size(); i++) {
+                        rn.testar(teste.get(i),tp_act);
                         pbTeste.setProgress(i/iTeste);
                         Thread.sleep(5);
                     }
@@ -341,7 +365,6 @@ public class FXMLDocumentController implements Initializable {
                 }
             }
         }.start();
-
     }
 
 

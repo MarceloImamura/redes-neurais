@@ -15,7 +15,8 @@ import java.util.Random;
  * @author marceloimamura
  */
 public class CarregaDS {
-
+    
+    private boolean normalizado;
     private ArrayList<DataSet> dsTeste;
     private ArrayList<DataSet> dataset;
     private ArrayList<String> tpSaidas;
@@ -23,6 +24,19 @@ public class CarregaDS {
     ArrayList<Double> maior;
     private int ientradas, isaida;
 
+    public CarregaDS() {
+        normalizado = false;
+    }
+
+    public boolean isNormalizado() {
+        return normalizado;
+    }
+
+    public void setNormalizado(boolean normalizado) {
+        this.normalizado = normalizado;
+    }
+    
+    
     public ArrayList<String> getTpSaidas() {
         return tpSaidas;
     }
@@ -204,6 +218,7 @@ public class CarregaDS {
     }
     
     public void normalizar(){
+        normalizado = true;
         double v;
         for (DataSet ds : dataset) {
             for (int i = 0; i < ds.getEntrada().size(); i++) {
