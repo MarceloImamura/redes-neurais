@@ -348,10 +348,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void evtExibe(ActionEvent event) {
         txConfNormal.setText(rn.exibeMatriz());
-        //graficoE.getData().clear();
+        graficoE.getData().clear();
         
         XYChart.Series series = new XYChart.Series();
-        series.setName("Teste");
+        series.setName("Erros do Treinamento");
         ArrayList erros = rn.getLogErro();
         
         for (int i = 0; i < erros.size(); i++) {

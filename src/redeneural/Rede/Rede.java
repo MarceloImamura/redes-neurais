@@ -26,7 +26,9 @@ public class Rede {
 
     public String exibeMatriz(){
         String exibe = "\t";
-        
+        double total = 0 ;
+        double acerto = 0;
+        double porc;
         for (int i = 0; i < isaida; i++) {
             exibe += tpSaidas.get(i)+"\t";
         }
@@ -34,11 +36,35 @@ public class Rede {
         for (int i = 0; i < isaida; i++) {
             exibe+=tpSaidas.get(i)+"\t";
             for (int j = 0; j < isaida; j++) {
+                if(i==j)
+                    acerto+=mConfusao[i][j];
+                
                 exibe += mConfusao[i][j]+ "\t";
+                total +=mConfusao[i][j];
             }
             exibe+="\n";
         }
+        porc = (acerto/total)*100;
+        exibe+="\nacurácia da rede";
+        exibe+=String.format(": %.3f", porc);
+        exibe+=" %";
         
+        
+        for (int i = 0; i < isaida; i++) {
+            total = 0;
+            acerto = 0;
+            for (int j = 0; j < isaida; j++) {
+                if(i==j)
+                    acerto+=mConfusao[i][j];
+                
+                total +=mConfusao[i][j];
+            }
+            porc = (acerto/total)*100;
+            exibe+="\nacurácia de "+tpSaidas.get(i);
+            exibe+=String.format(": %.3f", porc);
+            exibe+=" %";
+
+        }
         
         return exibe;
     }

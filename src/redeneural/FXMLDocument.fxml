@@ -22,9 +22,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="880.0" prefWidth="1249.0" stylesheets="@Estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redeneural.FXMLDocumentController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="676.0" prefWidth="1094.0" stylesheets="@Estilo.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="redeneural.FXMLDocumentController">
    <top>
-      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="215.0" prefWidth="1094.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="134.0" prefWidth="1249.0" styleClass="fundo">
                <children>
@@ -40,7 +40,7 @@
                   <AnchorPane prefHeight="290.0" prefWidth="992.0" styleClass="fundo">
                      <children>
                         <Button layoutX="870.0" layoutY="55.0" mnemonicParsing="false" onAction="#evtCarrega" style="-fx-border-radius: 3px;" text="Carrega DataSet" />
-                        <Pane layoutX="600.0" layoutY="17.0" prefHeight="187.0" prefWidth="174.0" styleClass="pane">
+                        <Pane layoutX="470.0" layoutY="16.0" prefHeight="187.0" prefWidth="174.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Função de ativaçao" />
                               <RadioButton id="tp_act" fx:id="rbLinear" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" text="linear">
@@ -54,34 +54,40 @@
                         </Pane>
                         <Button fx:id="btTreinar" layoutX="870.0" layoutY="14.0" mnemonicParsing="false" onAction="#evtTreinar" prefHeight="27.0" prefWidth="120.0" text="Treinar" />
                         <Button fx:id="btTeste" layoutX="870.0" layoutY="94.0" mnemonicParsing="false" onAction="#evtCarregaTeste" prefHeight="29.0" prefWidth="122.0" style="-fx-border-radius: 3px;" text="Carrega Teste" />
-                        <Pane layoutX="373.0" layoutY="17.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
+                        <Pane layoutX="280.0" layoutY="17.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Taxa de Apredizagem" />
-                              <TextField fx:id="txAprendizagem" layoutX="85.0" layoutY="27.0" prefHeight="32.0" prefWidth="106.0" />
+                              <TextField fx:id="txAprendizagem" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
-                        <Pane layoutX="373.0" layoutY="128.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
+                        <Pane layoutX="280.0" layoutY="128.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Número Iteraçoes" />
-                              <TextField fx:id="txItera" layoutX="85.0" layoutY="27.0" prefHeight="32.0" prefWidth="106.0" />
+                              <TextField fx:id="txItera" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
-                        <Pane layoutX="789.0" layoutY="130.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
+                        <Pane layoutX="657.0" layoutY="20.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="K fould" />
                               <CheckBox fx:id="ckFould" layoutX="72.0" layoutY="26.0" mnemonicParsing="false" onAction="#evtFould" text="Usar K fould" />
                            </children>
                         </Pane>
-                        <Pane layoutX="24.0" layoutY="72.0" prefHeight="164.0" prefWidth="294.0" />
-                        <Pane layoutX="52.0" layoutY="17.0" prefHeight="184.0" prefWidth="303.0" styleClass="pane">
+                        <Pane layoutY="55.0" prefHeight="164.0" prefWidth="294.0" />
+                        <Pane layoutX="52.0" layoutY="17.0" prefHeight="184.0" prefWidth="216.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Configura Rede" />
                               <Label layoutX="24.0" layoutY="34.0" text="Camada Entrada" />
-                              <TextField fx:id="txEntrada" layoutX="153.0" layoutY="27.0" prefHeight="32.0" prefWidth="128.0" />
+                              <TextField fx:id="txEntrada" layoutX="140.0" layoutY="27.0" prefHeight="32.0" prefWidth="70.0" />
                               <Label layoutX="24.0" layoutY="69.0" text="Camada Oculta" />
-                              <TextField fx:id="txOculta" layoutX="153.0" layoutY="62.0" prefHeight="32.0" prefWidth="128.0" />
+                              <TextField fx:id="txOculta" layoutX="140.0" layoutY="62.0" prefHeight="32.0" prefWidth="70.0" />
                               <Label layoutX="24.0" layoutY="104.0" text="Camada Saída" />
-                              <TextField fx:id="txSaida" layoutX="153.0" layoutY="96.0" prefHeight="32.0" prefWidth="128.0" />
+                              <TextField fx:id="txSaida" layoutX="140.0" layoutY="96.0" prefHeight="32.0" prefWidth="70.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="657.0" layoutY="123.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
+                           <children>
+                              <Label layoutX="10.0" layoutY="10.0" text="Randomizar" />
+                              <CheckBox fx:id="ckFould1" layoutX="65.0" layoutY="35.0" mnemonicParsing="false" onAction="#evtFould" text="Randon DataSet" />
                            </children>
                         </Pane>
                      </children>
@@ -92,7 +98,7 @@
       </VBox>
    </top>
    <center>
-      <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="390.0" prefWidth="1094.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab fx:id="tabNormal" text="Normal">
                <content>
