@@ -42,3 +42,43 @@ tabela .table-column {
     -fx-background-color: #d4d4d4;
     -fx-border-color: black;
 }
+
+.combo-box .list-cell 
+{
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: black;
+    -fx-background-color: #d4d4d4;
+    -fx-border-color: black;
+}
+
+
+.combo-box-popup .list-view 
+{
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: black;
+    -fx-background-color: #d4d4d4;
+    -fx-border-color: black;
+}    
+
+.combo-box-popup .list-view .list-cell 
+{
+    -fx-padding: 4 0 4 5;
+
+    /* No alternate highlighting */
+    -fx-background-color: gray;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
+{
+    -fx-background: -fx-accent;
+    -fx-background-color: gray;
+    -fx-text-fill: whitesmoke;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: black;
+    -fx-text-fill: whitesmoke;
+}

@@ -22,6 +22,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
@@ -49,15 +50,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TableView<ObservableList<String>> tabela;
     @FXML
-    private RadioButton rbLinear;
-    @FXML
-    private RadioButton rbLog;
-    @FXML
-    private RadioButton rbHiper;
-    @FXML
     private Button btTreinar;
-    @FXML
-    private ToggleGroup tp_act;
     @FXML
     private TextField txEntrada;
     @FXML
@@ -98,6 +91,10 @@ public class FXMLDocumentController implements Initializable {
     private TextArea txConfNormal;
     @FXML
     private CheckBox ckRandon;
+    @FXML
+    private ComboBox<String> cbTpFunc;
+    @FXML
+    private TextField txErro;
     
 
     @Override
@@ -106,15 +103,16 @@ public class FXMLDocumentController implements Initializable {
         rn = new Rede();
         tabK.setDisable(true);
         flagTeste = false;
-        rbLinear.setSelected(true);
         btTeste.setDisable(true);
         btTreinar.setDisable(true);
         txEntrada.setDisable(true);
-
+        cbTpFunc.getItems().addAll("Linear","Logística","Hiperbólica");
+        cbTpFunc.getSelectionModel().select(0);
         txAprendizagem.setText("0.1");
         txItera.setText("25");
         txOculta.setText("1");
         txSaida.setDisable(true);
+        txErro.setText("0.00001");
         txOculta.requestFocus();
 
         graficoE.setTitle("Erro");
@@ -294,14 +292,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void evtTreinar(ActionEvent event) {
-        int tp_act;
-        if (rbLog.isSelected()) {
-            tp_act = 1;
-        } else if (rbLinear.isSelected()) {
-            tp_act = 0;
-        } else {
-            tp_act = 2;
-        }
+        double erro = Double.parseDouble(txErro.getText());
+        int tp_act = cbTpFunc.getSelectionModel().getSelectedIndex();
         
         int camadas = Integer.parseInt(txOculta.getText());
         double txApredizagem = Double.parseDouble(txAprendizagem.getText());
@@ -329,22 +321,25 @@ public class FXMLDocumentController implements Initializable {
         if(ckFould.isSelected()){
             
         }else{
-            treino_N(epoca, txApredizagem, tp_act, ds, teste);
+            treino_N(erro,epoca, txApredizagem, tp_act, ds, teste);
         }
     }
     
-    public void treino_N(double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> ds,ArrayList<DataSet> teste ){
+    public void treino_N(double erro, double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> ds,ArrayList<DataSet> teste ){
         new Thread() {
 
             @Override
             public void run() {
+                boolean flagErro = true;
                 try {
-                    for (int i = 0; i < epoca; i++) {
+                    for (int i = 0; i < epoca && flagErro; i++) {
                         pbIteracoes.setProgress(i / epoca);
                         //Epoca, Camada,tp_act,taxaA
                         rn.treinar(ds, teste, tp_act, txApredizagem);
                         Thread.sleep(5);
 
+                        if(erro>=rn.getRedeErro())
+                            flagErro = false;
                     }
                     
                     pbIteracoes.setProgress(1.0);

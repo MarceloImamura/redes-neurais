@@ -6,15 +6,14 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -40,16 +39,10 @@
                   <AnchorPane prefHeight="290.0" prefWidth="992.0" styleClass="fundo">
                      <children>
                         <Button layoutX="870.0" layoutY="55.0" mnemonicParsing="false" onAction="#evtCarrega" style="-fx-border-radius: 3px;" text="Carrega DataSet" />
-                        <Pane layoutX="470.0" layoutY="16.0" prefHeight="187.0" prefWidth="174.0" styleClass="pane">
+                        <Pane layoutX="470.0" layoutY="16.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Função de ativaçao" />
-                              <RadioButton id="tp_act" fx:id="rbLinear" layoutX="20.0" layoutY="30.0" mnemonicParsing="false" text="linear">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="tp_act" />
-                                 </toggleGroup>
-                              </RadioButton>
-                              <RadioButton id="tp_act" fx:id="rbLog" layoutX="20.0" layoutY="55.0" mnemonicParsing="false" text="logistica" toggleGroup="$tp_act" />
-                              <RadioButton id="tp_act" fx:id="rbHiper" layoutX="20.0" layoutY="80.0" mnemonicParsing="false" text="hiper" toggleGroup="$tp_act" />
+                              <ComboBox fx:id="cbTpFunc" layoutX="20.0" layoutY="35.0" prefHeight="27.0" prefWidth="120.0" />
                            </children>
                         </Pane>
                         <Button fx:id="btTreinar" layoutX="870.0" layoutY="14.0" mnemonicParsing="false" onAction="#evtTreinar" prefHeight="27.0" prefWidth="120.0" text="Treinar" />
@@ -88,6 +81,12 @@
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Randomizar" />
                               <CheckBox fx:id="ckRandon" layoutX="65.0" layoutY="35.0" mnemonicParsing="false" text="Randon DataSet" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="470.0" layoutY="128.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
+                           <children>
+                              <Label layoutX="10.0" layoutY="10.0" text="Valor do erro" />
+                              <TextField fx:id="txErro" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
                      </children>
