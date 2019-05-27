@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,6 +95,7 @@ public class FXMLDocumentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        graficoE.setCreateSymbols(false);
         carrega = new CarregaDS();
         rn = new Rede();
         flagTeste = false;
@@ -319,10 +321,10 @@ public class FXMLDocumentController implements Initializable {
 
         if (ckRandon.isSelected()) {
             ds = carrega.randomDS(carrega.getDataset());
-            
-            if(carrega.getDsTeste() != null)
+
+            if (carrega.getDsTeste() != null) {
                 teste = carrega.randomDS(carrega.getDsTeste());
-            else{
+            } else {
                 teste = null;
             }
         } else {
@@ -338,11 +340,8 @@ public class FXMLDocumentController implements Initializable {
         if (ckFould.isSelected()) {
             exibe = "";
             rn.iniciar_Kfould_log();
-            //treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
-            ds = rn.getDS_K(0, ds);
-            teste = rn.getTeste_K(0, ds);
-            treino_N(erro, epoca, txApredizagem, tp_act, ds, teste);
-            rn.setLog_k(0, rn.getLogErro());
+            treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
+
         } else {
             ds = rn.getDS_K(0, ds);
             teste = rn.getTeste_K(0, ds);
@@ -356,13 +355,13 @@ public class FXMLDocumentController implements Initializable {
             @Override
             public void run() {
                 boolean flagErro = true;
+
                 try {
                     for (int i = 0; i < epoca && flagErro; i++) {
                         pbIteracoes.setProgress(i / epoca);
                         //Epoca, Camada,tp_act,taxaA
                         rn.treinar(ds, teste, tp_act, txApredizagem);
                         Thread.sleep(5);
-
                         if (erro >= rn.getRedeErro()) {
                             flagErro = false;
                         }
@@ -425,7 +424,7 @@ public class FXMLDocumentController implements Initializable {
                         pbIteracoes.setProgress(porc);
                         rn.setLog_k(j, rn.getLogErro());
                         pbTeste.setProgress(0.0);
-                        
+
                         double iTeste = Double.parseDouble("" + teste.size());
                         for (int i = 0; i < teste.size(); i++) {
                             rn.testar(teste.get(i), tp_act);
@@ -458,9 +457,9 @@ public class FXMLDocumentController implements Initializable {
             for (int i = 0; i < 4; i++) {
                 series = new XYChart.Series();
                 erros = rn.getLog(i);
-                series.setName("Iteração "+(i+1));
+                series.setName("Iteração " + (i + 1));
                 for (int j = 0; j < erros.size(); j++) {
-                    series.getData().add(new XYChart.Data("" + j, erros.get(i)));
+                    series.getData().add(new XYChart.Data("" + j, erros.get(j)));
 
                 }
                 graficoE.getData().add(series);
