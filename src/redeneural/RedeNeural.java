@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package redeneural;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Random;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,7 +31,7 @@ public class RedeNeural extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        Rede r = new Rede();
+        /*Rede r = new Rede();
         r.iniciar(2, 1, 2);
         ArrayList<CamadaOculta> oculta = r.getRede();
         CamadaOculta c = oculta.get(0);
@@ -78,7 +72,17 @@ public class RedeNeural extends Application {
         
 
         double resul = 2.1 + 0.5 * -0.65 * -0.55;
-        System.out.println(resul);
+        System.out.println(resul);*/
+        
+        int[][] matriz = new int[2][3];
+        int k =0;
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                matriz[i][j] = k;
+                k++;
+            }
+        }
+        
         
         System.exit(0);
         

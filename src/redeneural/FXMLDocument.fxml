@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -99,54 +99,6 @@
    <center>
       <TabPane prefHeight="390.0" prefWidth="1094.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab fx:id="tabNormal" text="Normal">
-               <content>
-                  <TabPane prefHeight="788.0" prefWidth="1249.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Erro">
-                           <content>
-                              <LineChart fx:id="graficoE">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis side="LEFT" />
-                                </yAxis>
-                              </LineChart>
-                           </content>
-                      </Tab>
-                      <Tab text="Confusão">
-                           <content>
-                              <TextArea fx:id="txConfNormal" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                      </Tab>
-                    </tabs>
-                  </TabPane>
-               </content>
-          </Tab>
-          <Tab fx:id="tabK" text="K fould">
-               <content>
-                  <TabPane prefHeight="788.0" prefWidth="1249.0" tabClosingPolicy="UNAVAILABLE">
-                     <tabs>
-                        <Tab text="Erro" />
-                        <Tab text="Confusão">
-                           <content>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Canvas fx:id="canvas1" height="329.0" width="753.0" />
-                                 </children>
-                              </HBox>
-                           </content>
-                        </Tab>
-                        <Tab fx:id="tabelaK" text="DataSet">
-                           <content>
-                              <TableView fx:id="tabela1" prefHeight="200.0" prefWidth="200.0" />
-                           </content>
-                        </Tab>
-                     </tabs>
-                  </TabPane>
-               </content>
-          </Tab>
             <Tab fx:id="tabExe" text="Execução">
                <content>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
@@ -172,6 +124,35 @@
             <Tab fx:id="tabTeste" text="Teste">
                <content>
                   <TableView fx:id="tabelaTeste" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+          <Tab text="Resultado">
+               <content>
+                  <TextArea fx:id="txConfNormal" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+          </Tab>
+            <Tab text="Erro">
+               <content>
+                  <LineChart fx:id="graficoE">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+               </content>
+            </Tab>
+            <Tab text="Precisão">
+               <content>
+                  <BarChart fx:id="chPrecisao">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </BarChart>
                </content>
             </Tab>
         </tabs>

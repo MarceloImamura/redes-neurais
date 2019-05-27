@@ -15,7 +15,7 @@ import java.util.Random;
  * @author marceloimamura
  */
 public class CarregaDS {
-    
+
     private boolean normalizado;
     private ArrayList<DataSet> dsTeste;
     private ArrayList<DataSet> dataset;
@@ -35,8 +35,7 @@ public class CarregaDS {
     public void setNormalizado(boolean normalizado) {
         this.normalizado = normalizado;
     }
-    
-    
+
     public ArrayList<String> getTpSaidas() {
         return tpSaidas;
     }
@@ -44,9 +43,7 @@ public class CarregaDS {
     public void setTpSaidas(ArrayList<String> tpSaidas) {
         this.tpSaidas = tpSaidas;
     }
-    
-    
-    
+
     public ArrayList<DataSet> getDataset() {
         return dataset;
     }
@@ -70,7 +67,6 @@ public class CarregaDS {
     public int getIsaida() {
         return tpSaidas.size();
     }
-    
 
     public int addDatasetSaida(String saida) {
         boolean flag = true;
@@ -86,7 +82,7 @@ public class CarregaDS {
             tpSaidas.add(saida);
             return i;
         }
-        return i-1;
+        return i - 1;
     }
 
     public boolean buscaDatasetSaida(String saida) {
@@ -134,7 +130,7 @@ public class CarregaDS {
         }
         return true;
     }
-    
+
     public boolean carregaTeste(String dir) {
         dsTeste = verifica(dir);
 
@@ -177,7 +173,7 @@ public class CarregaDS {
                     try {
                         for (int i = 0; i < var.length - 1; i++) {
                             valor = Double.parseDouble(var[i]);
-                            
+
                             if (maior.size() < ientradas) {
                                 maior.add(valor);
                                 menor.add(valor);
@@ -216,40 +212,43 @@ public class CarregaDS {
 
         return lista;
     }
-    
-    public void normalizar(){
+
+    public void normalizar() {
         normalizado = true;
         double v;
         for (DataSet ds : dataset) {
             for (int i = 0; i < ds.getEntrada().size(); i++) {
                 v = ds.getEntrada().get(i);
-                v = (v - menor.get(i))/(maior.get(i)-menor.get(i));
-                if(v>1){
-                    System.out.println("Erro: "+v+" Valor Entrada: "+ds.getEntrada().get(i)+" maior: "+maior.get(i)+" coluna: "+i);
+                v = (v - menor.get(i)) / (maior.get(i) - menor.get(i));
+                if (v > 1) {
+                    System.out.println("Erro: " + v + " Valor Entrada: " + ds.getEntrada().get(i) + " maior: " + maior.get(i) + " coluna: " + i);
                 }
-                if(v<-1){
-                    System.out.println("Erro: "+v+" Valor Entrada: "+ds.getEntrada().get(i)+" maior: "+maior.get(i)+" coluna: "+i);
+                if (v < -1) {
+                    System.out.println("Erro: " + v + " Valor Entrada: " + ds.getEntrada().get(i) + " maior: " + maior.get(i) + " coluna: " + i);
                 }
                 ds.getEntrada().set(i, v);
             }
         }
-        
-        for (DataSet d : dsTeste) {
-            for (int i = 0; i < d.getEntrada().size(); i++) {
-                v = d.getEntrada().get(i);
-                d.getEntrada().set(i, (v - menor.get(i)/(maior.get(i)-menor.get(i))));
-                d.getEntrada().set(i, v);
+
+        if (dsTeste != null) {
+            for (DataSet d : dsTeste) {
+                for (int i = 0; i < d.getEntrada().size(); i++) {
+                    v = d.getEntrada().get(i);
+                    d.getEntrada().set(i, (v - menor.get(i) / (maior.get(i) - menor.get(i))));
+                    d.getEntrada().set(i, v);
+                }
             }
         }
+
     }
-    
-    public void randonDS(){
+
+    public void randonDS() {
         dataset = randomDS(dataset);
     }
-    
-    public ArrayList<DataSet> randomDS(ArrayList<DataSet> lista){
-        ArrayList<DataSet> aux  = new ArrayList();
-        
+
+    public ArrayList<DataSet> randomDS(ArrayList<DataSet> lista) {
+        ArrayList<DataSet> aux = new ArrayList();
+
         for (DataSet ds : lista) {
             Random random = new Random();
             if (aux.size() == 0) {
@@ -259,7 +258,7 @@ public class CarregaDS {
                 aux.add(index, ds);
             }
         }
-        
+
         return aux;
     }
 }

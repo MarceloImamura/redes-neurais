@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import redeneural.DataSet.DataSet;
 
 public class Rede {
-
     private ArrayList<Double> logErro;
     private ArrayList<CamadaOculta> rede;
     private ArrayList<String> tpSaidas;
+    private ArrayList<Double>[] vetorLog;
     private int[][] mConfusao;
     private double redeErro;
     private int ientradas, icamadas, isaida, ineuronioOculto;
@@ -59,7 +59,12 @@ public class Rede {
                 
                 total +=mConfusao[i][j];
             }
-            porc = (acerto/total)*100;
+            
+            if(total!=0)
+                porc = (acerto/total)*100;
+            else{
+                porc = 0.0;
+            }
             exibe+="\nacurácia de "+tpSaidas.get(i);
             exibe+=String.format(": %.3f", porc);
             exibe+=" %";
@@ -89,10 +94,33 @@ public class Rede {
         rede.add(co);
     }
     
+    public void iniciar_Kfould_log(){
+        vetorLog = new ArrayList[4];
+        
+        for (int i = 0; i < 4; i++) {
+            vetorLog[i] = new ArrayList();
+        }
+    }
+    
+    
     public void iniciarTeste(){
         mConfusao = new int[isaida][isaida];
     }
+    
+    public void iniciarLog(){
+        logErro = new ArrayList();
+    }
     //----------------------------iniciar-----------------------------------
+    
+    public void setLog_k(int i, ArrayList<Double> lista){
+        vetorLog[i] = lista;
+    }
+    
+    public ArrayList<Double> getLog(int i){
+        return vetorLog[i];
+    }
+    
+    
     public int getIcamadas() {
         return icamadas;
     }
@@ -257,4 +285,45 @@ public class Rede {
         mConfusao[desejado][saida]++;
         
     }
+    
+    public ArrayList<DataSet> juntarDS(ArrayList<DataSet> ds, ArrayList<DataSet> teste){
+        ArrayList<DataSet> lista = new ArrayList();
+        lista.addAll(ds);
+        if(teste!=null)
+            lista.addAll(teste);
+        
+        return lista;
+    }
+    
+    public ArrayList<DataSet> getDS_K(int i,ArrayList<DataSet> ds){
+        int div = ds.size()/4;
+        int ini = i * div;
+        int fim = ini + div;
+        
+        ArrayList<DataSet> lista = new ArrayList();
+        
+        for (int j = 0; j < ds.size(); j++) {
+            if(j<ini || j>=fim){
+                lista.add(ds.get(j));
+            }
+        }
+        return lista;
+    }
+    
+    public ArrayList<DataSet> getTeste_K(int i,ArrayList<DataSet> ds){
+        int div = ds.size()/4;
+        int ini = i * div;
+        int fim = ini + div;
+        
+        ArrayList<DataSet> lista = new ArrayList();
+        
+        for (int j = 0; j < ds.size(); j++) {
+            if(j>=ini && j<fim){
+                lista.add(ds.get(j));
+            }
+        }
+        return lista;
+    }
+    
+    
 }

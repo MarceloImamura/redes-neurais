@@ -18,11 +18,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
@@ -42,6 +44,7 @@ import redeneural.Rede.Rede;
  * @author marceloimamura
  */
 public class FXMLDocumentController implements Initializable {
+
     private boolean flagTeste;
     private Rede rn;
     private CarregaDS carrega;
@@ -74,19 +77,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private CheckBox ckFould;
     @FXML
-    private Tab tabNormal;
-    @FXML
-    private Tab tabK;
-    @FXML
     private TableView<ObservableList<String>> tabelaTeste;
     @FXML
     private TextField txAprendizagem;
-    @FXML
-    private Canvas canvas1;
-    @FXML
-    private Tab tabelaK;
-    @FXML
-    private TableView<?> tabela1;
     @FXML
     private TextArea txConfNormal;
     @FXML
@@ -95,18 +88,19 @@ public class FXMLDocumentController implements Initializable {
     private ComboBox<String> cbTpFunc;
     @FXML
     private TextField txErro;
-    
+    @FXML
+    private BarChart<?, ?> chPrecisao;
+    private String exibe;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         carrega = new CarregaDS();
         rn = new Rede();
-        tabK.setDisable(true);
         flagTeste = false;
         btTeste.setDisable(true);
         btTreinar.setDisable(true);
         txEntrada.setDisable(true);
-        cbTpFunc.getItems().addAll("Linear","Logística","Hiperbólica");
+        cbTpFunc.getItems().addAll("Linear", "Logística", "Hiperbólica");
         cbTpFunc.getSelectionModel().select(0);
         txAprendizagem.setText("0.1");
         txItera.setText("25");
@@ -122,6 +116,24 @@ public class FXMLDocumentController implements Initializable {
         tabela.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tabelaTeste.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btExibe.setVisible(false);
+
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("I 1 ");
+        series1.getData().add(new XYChart.Data("Precisao", 90.0));
+
+        XYChart.Series series2 = new XYChart.Series();
+        series2.setName("I 2");
+        series2.getData().add(new XYChart.Data("Precisao", 97.0));
+
+        XYChart.Series series3 = new XYChart.Series();
+        series3.setName("I 3");
+        series3.getData().add(new XYChart.Data("Precisao", 99.0));
+
+        XYChart.Series series4 = new XYChart.Series();
+        series4.setName("I 4");
+        series4.getData().add(new XYChart.Data("Precisao", 97.0));
+
+        chPrecisao.getData().addAll(series1, series2, series3, series4);
     }
 
     private void carregaTabela() {
@@ -146,8 +158,8 @@ public class FXMLDocumentController implements Initializable {
                 insert(diretorio);
                 btTeste.setDisable(false);
 
-                txEntrada.setText(""+carrega.getIentradas());
-                txSaida.setText(""+carrega.getIsaida());
+                txEntrada.setText("" + carrega.getIentradas());
+                txSaida.setText("" + carrega.getIsaida());
             }
         }
     }
@@ -220,7 +232,7 @@ public class FXMLDocumentController implements Initializable {
         }
 
     }
-    
+
     public void insertTeste(String dir) {
         tabelaTeste.getColumns().clear();
         List<String> columns = new ArrayList<String>();
@@ -294,38 +306,45 @@ public class FXMLDocumentController implements Initializable {
     private void evtTreinar(ActionEvent event) {
         double erro = Double.parseDouble(txErro.getText());
         int tp_act = cbTpFunc.getSelectionModel().getSelectedIndex();
-        
+
         int camadas = Integer.parseInt(txOculta.getText());
         double txApredizagem = Double.parseDouble(txAprendizagem.getText());
         double epoca = Double.parseDouble(txItera.getText());
         ArrayList<DataSet> ds;
         ArrayList<DataSet> teste;
-        
-        if(!carrega.isNormalizado())
+
+        if (!carrega.isNormalizado()) {
             carrega.normalizar();
-        
-        if(ckRandon.isSelected()){
+        }
+
+        if (ckRandon.isSelected()) {
             ds = carrega.randomDS(carrega.getDataset());
-            teste = carrega.randomDS(carrega.getDsTeste());
-        }else{
+            
+            if(carrega.getDsTeste() != null)
+                teste = carrega.randomDS(carrega.getDsTeste());
+            else{
+                teste = null;
+            }
+        } else {
             ds = carrega.getDataset();
             teste = carrega.getDsTeste();
         }
-        
-        
+
         pbIteracoes.setProgress(0.0);
         pbTeste.setProgress(0.0);
         rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
         rn.setTpSaidas(carrega.getTpSaidas());
-        
-        if(ckFould.isSelected()){
-            
-        }else{
-            treino_N(erro,epoca, txApredizagem, tp_act, ds, teste);
+
+        if (ckFould.isSelected()) {
+            exibe = "";
+            rn.iniciar_Kfould_log();
+            treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
+        } else {
+            treino_N(erro, epoca, txApredizagem, tp_act, ds, teste);
         }
     }
-    
-    public void treino_N(double erro, double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> ds,ArrayList<DataSet> teste ){
+
+    public void treino_N(double erro, double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> ds, ArrayList<DataSet> teste) {
         new Thread() {
 
             @Override
@@ -338,23 +357,24 @@ public class FXMLDocumentController implements Initializable {
                         rn.treinar(ds, teste, tp_act, txApredizagem);
                         Thread.sleep(5);
 
-                        if(erro>=rn.getRedeErro())
+                        if (erro >= rn.getRedeErro()) {
                             flagErro = false;
+                        }
                     }
-                    
+
                     pbIteracoes.setProgress(1.0);
                     rn.iniciarTeste();
-                    
-                    double iTeste = Double.parseDouble(""+teste.size());
+
+                    double iTeste = Double.parseDouble("" + teste.size());
                     for (int i = 0; i < teste.size(); i++) {
-                        rn.testar(teste.get(i),tp_act);
-                        pbTeste.setProgress(i/iTeste);
+                        rn.testar(teste.get(i), tp_act);
+                        pbTeste.setProgress(i / iTeste);
                         Thread.sleep(5);
                     }
-                    
+
                     pbTeste.setProgress(1.0);
                     btExibe.setVisible(true);
-                    
+
                 } catch (Exception ex) {
                     System.out.println("Erro: " + ex.getMessage());
                 }
@@ -362,34 +382,107 @@ public class FXMLDocumentController implements Initializable {
         }.start();
     }
 
+    public void treino_K(double erro, double epoca, double txApredizagem, int tp_act, ArrayList<DataSet> data) {
+        new Thread() {
+
+            @Override
+            public void run() {
+                double aux;
+                double porc = 0;
+                int camadas = Integer.parseInt(txOculta.getText());
+                boolean flagErro;
+                ArrayList<DataSet> ds, teste;
+                try {
+                    for (int j = 0; j < 4; j++) {
+                        rn.iniciarLog();
+                        rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
+                        rn.iniciarTeste();
+
+                        flagErro = true;
+
+                        exibe += "K = " + j + "\n";
+
+                        ds = rn.getDS_K(j, data);
+                        teste = rn.getTeste_K(j, data);
+
+                        for (int i = 0; i < epoca && flagErro; i++) {
+                            aux = ((i / epoca) / 4) + porc;
+                            pbIteracoes.setProgress(aux);
+                            //Epoca, Camada,tp_act,taxaA
+                            rn.treinar(ds, teste, tp_act, txApredizagem);
+                            Thread.sleep(5);
+                            if (erro >= rn.getRedeErro()) {
+                                flagErro = false;
+                            }
+                        }
+                        porc += 0.25;
+                        pbIteracoes.setProgress(porc);
+                        rn.setLog_k(j, rn.getLogErro());
+                        pbTeste.setProgress(0.0);
+                        
+                        double iTeste = Double.parseDouble("" + teste.size());
+                        for (int i = 0; i < teste.size(); i++) {
+                            rn.testar(teste.get(i), tp_act);
+                            pbTeste.setProgress(i / iTeste);
+                            Thread.sleep(5);
+                        }
+                        pbTeste.setProgress(1.0);
+                        Thread.sleep(5);
+                        exibe += rn.exibeMatriz() + "\n\n";
+                    }
+
+                    pbTeste.setProgress(1.0);
+                    btExibe.setVisible(true);
+                    pbIteracoes.setProgress(1.0);
+                } catch (Exception ex) {
+                    System.out.println("Erro: " + ex.getMessage());
+                }
+            }
+        }.start();
+    }
 
     @FXML
     private void evtExibe(ActionEvent event) {
-        txConfNormal.setText(rn.exibeMatriz());
+        XYChart.Series series;
         graficoE.getData().clear();
-        
-        XYChart.Series series = new XYChart.Series();
-        series.setName("Erros do Treinamento");
-        ArrayList erros = rn.getLogErro();
-        
-        for (int i = 0; i < erros.size(); i++) {
-            series.getData().add(new XYChart.Data("" + i, erros.get(i)));
 
+        if (ckFould.isSelected()) {
+            txConfNormal.setText(exibe);
+            ArrayList<Double> erros;
+            for (int i = 0; i < 4; i++) {
+                series = new XYChart.Series();
+                erros = rn.getLog(i);
+                series.setName("Iteração "+(i+1));
+                for (int j = 0; j < erros.size(); j++) {
+                    series.getData().add(new XYChart.Data("" + j, erros.get(i)));
+
+                }
+                graficoE.getData().add(series);
+            }
+        } else {
+            txConfNormal.setText(rn.exibeMatriz());
+            series = new XYChart.Series();
+
+            series.setName("Erros do Treinamento");
+            ArrayList erros = rn.getLogErro();
+
+            for (int i = 0; i < erros.size(); i++) {
+                series.getData().add(new XYChart.Data("" + i, erros.get(i)));
+
+            }
+            graficoE.getData().add(series);
         }
-        graficoE.getData().add(series);
+
     }
 
     @FXML
     private void evtFould(ActionEvent event) {
-        if(ckFould.isSelected()){
+        if (ckFould.isSelected()) {
             btTreinar.setDisable(false);
-            tabK.setDisable(false);
-            tabNormal.setDisable(true);
-        }else{
-            if(!flagTeste)
+        } else {
+            if (!flagTeste) {
                 btTreinar.setDisable(true);
-            tabK.setDisable(true);
-            tabNormal.setDisable(false);
+            }
         }
     }
 
@@ -409,7 +502,7 @@ public class FXMLDocumentController implements Initializable {
                 btTreinar.setDisable(false);
                 tabTeste.setDisable(false);
                 flagTeste = true;
-                
+
             }
         }
     }
