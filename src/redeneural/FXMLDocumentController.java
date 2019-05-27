@@ -338,8 +338,14 @@ public class FXMLDocumentController implements Initializable {
         if (ckFould.isSelected()) {
             exibe = "";
             rn.iniciar_Kfould_log();
-            treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
+            //treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
+            ds = rn.getDS_K(0, ds);
+            teste = rn.getTeste_K(0, ds);
+            treino_N(erro, epoca, txApredizagem, tp_act, ds, teste);
+            rn.setLog_k(0, rn.getLogErro());
         } else {
+            ds = rn.getDS_K(0, ds);
+            teste = rn.getTeste_K(0, ds);
             treino_N(erro, epoca, txApredizagem, tp_act, ds, teste);
         }
     }
