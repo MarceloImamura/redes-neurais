@@ -16,11 +16,11 @@ public class Func_ativacao {
     }
     
     public double logistica(double net) {
-        return 1.0 / (1 + Math.pow(Math.E, -net));
+        return 1.0 / (1.0 + Math.pow(Math.E, -net));
     }
 
     public double hiper(double net) {
-        return (1 - Math.pow(Math.E, -2 * net)) / (1 + Math.pow(Math.E, -2 * net));
+        return (1.0 - Math.pow(Math.E, -2.0 * net)) / (1.0 + Math.pow(Math.E, -2.0 * net));
     }
 
     public double funcao_ativacao(double total, int tp_act) {
@@ -38,9 +38,9 @@ public class Func_ativacao {
         if (tp_act == 0) {
             return total * 0.1;
         } else if (tp_act == 1) {
-            return total * (net * (1 - net));
+            return total * (net * (1.0 - net));
         } else {
-            return total * (1 - Math.pow(net, 2));
+            return total * (1.0 - Math.pow(net, 2.0));
         }
     }
 }

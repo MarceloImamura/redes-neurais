@@ -70,7 +70,7 @@ public class Rede {
             exibe+=" %";
 
         }
-        
+        exibe+="\nErro da rede: "+redeErro;
         return exibe;
     }
     
