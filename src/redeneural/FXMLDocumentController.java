@@ -89,8 +89,6 @@ public class FXMLDocumentController implements Initializable {
     private ComboBox<String> cbTpFunc;
     @FXML
     private TextField txErro;
-    @FXML
-    private BarChart<?, ?> chPrecisao;
     private String exibe;
 
     @Override
@@ -119,23 +117,6 @@ public class FXMLDocumentController implements Initializable {
         tabelaTeste.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         btExibe.setVisible(false);
 
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("I 1 ");
-        series1.getData().add(new XYChart.Data("Precisao", 90.0));
-
-        XYChart.Series series2 = new XYChart.Series();
-        series2.setName("I 2");
-        series2.getData().add(new XYChart.Data("Precisao", 97.0));
-
-        XYChart.Series series3 = new XYChart.Series();
-        series3.setName("I 3");
-        series3.getData().add(new XYChart.Data("Precisao", 99.0));
-
-        XYChart.Series series4 = new XYChart.Series();
-        series4.setName("I 4");
-        series4.getData().add(new XYChart.Data("Precisao", 97.0));
-
-        chPrecisao.getData().addAll(series1, series2, series3, series4);
     }
 
     private void carregaTabela() {
@@ -343,8 +324,6 @@ public class FXMLDocumentController implements Initializable {
             treino_K(erro, epoca, txApredizagem, tp_act, rn.juntarDS(ds, teste));
 
         } else {
-            ds = rn.getDS_K(0, ds);
-            teste = rn.getTeste_K(0, ds);
             treino_N(erro, epoca, txApredizagem, tp_act, ds, teste);
         }
     }

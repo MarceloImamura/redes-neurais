@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -38,25 +37,25 @@
                <children>
                   <AnchorPane prefHeight="290.0" prefWidth="992.0" styleClass="fundo">
                      <children>
-                        <Button layoutX="870.0" layoutY="55.0" mnemonicParsing="false" onAction="#evtCarrega" style="-fx-border-radius: 3px;" text="Carrega DataSet" />
+                        <Button layoutX="870.0" layoutY="55.0" mnemonicParsing="false" onAction="#evtCarrega" prefHeight="29.0" prefWidth="120.0" style="-fx-border-radius: 3px;" text="Carrega DataSet" />
                         <Pane layoutX="470.0" layoutY="16.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
-                              <Label layoutX="10.0" layoutY="10.0" text="Função de ativaçao" />
-                              <ComboBox fx:id="cbTpFunc" layoutX="20.0" layoutY="35.0" prefHeight="27.0" prefWidth="120.0" />
+                              <Label layoutX="5.0" layoutY="5.0" text="Função de ativaçao" />
+                              <ComboBox fx:id="cbTpFunc" layoutX="40.0" layoutY="22.0" prefHeight="27.0" prefWidth="120.0" />
                            </children>
                         </Pane>
                         <Button fx:id="btTreinar" layoutX="870.0" layoutY="14.0" mnemonicParsing="false" onAction="#evtTreinar" prefHeight="27.0" prefWidth="120.0" text="Treinar" />
                         <Button fx:id="btTeste" layoutX="870.0" layoutY="94.0" mnemonicParsing="false" onAction="#evtCarregaTeste" prefHeight="29.0" prefWidth="122.0" style="-fx-border-radius: 3px;" text="Carrega Teste" />
                         <Pane layoutX="280.0" layoutY="17.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
-                              <Label layoutX="10.0" layoutY="10.0" text="Taxa de Apredizagem" />
-                              <TextField fx:id="txAprendizagem" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
+                              <Label layoutX="6.0" layoutY="6.0" text="Taxa de Apredizagem" />
+                              <TextField fx:id="txAprendizagem" layoutX="50.0" layoutY="25.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
                         <Pane layoutX="280.0" layoutY="128.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
-                              <Label layoutX="10.0" layoutY="10.0" text="Número Iteraçoes" />
-                              <TextField fx:id="txItera" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
+                              <Label layoutX="6.0" layoutY="6.0" text="Número Iteraçoes" />
+                              <TextField fx:id="txItera" layoutX="50.0" layoutY="25.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
                         <Pane layoutX="657.0" layoutY="20.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
@@ -69,12 +68,12 @@
                         <Pane layoutX="52.0" layoutY="17.0" prefHeight="184.0" prefWidth="216.0" styleClass="pane">
                            <children>
                               <Label layoutX="10.0" layoutY="10.0" text="Configura Rede" />
-                              <Label layoutX="24.0" layoutY="34.0" text="Camada Entrada" />
-                              <TextField fx:id="txEntrada" layoutX="140.0" layoutY="27.0" prefHeight="32.0" prefWidth="70.0" />
-                              <Label layoutX="24.0" layoutY="69.0" text="Camada Oculta" />
-                              <TextField fx:id="txOculta" layoutX="140.0" layoutY="62.0" prefHeight="32.0" prefWidth="70.0" />
-                              <Label layoutX="24.0" layoutY="104.0" text="Camada Saída" />
-                              <TextField fx:id="txSaida" layoutX="140.0" layoutY="96.0" prefHeight="32.0" prefWidth="70.0" />
+                              <Label layoutX="27.0" layoutY="34.0" text="Camada Entrada" />
+                              <TextField fx:id="txEntrada" layoutX="140.0" layoutY="23.0" prefHeight="32.0" prefWidth="70.0" />
+                              <Label layoutX="24.0" layoutY="78.0" text="Camada Oculta" />
+                              <TextField fx:id="txOculta" layoutX="140.0" layoutY="67.0" prefHeight="32.0" prefWidth="70.0" />
+                              <Label layoutX="27.0" layoutY="124.0" text="Camada Saída" />
+                              <TextField fx:id="txSaida" layoutX="140.0" layoutY="113.0" prefHeight="25.0" prefWidth="70.0" />
                            </children>
                         </Pane>
                         <Pane layoutX="657.0" layoutY="123.0" prefHeight="70.0" prefWidth="203.0" styleClass="pane">
@@ -85,8 +84,8 @@
                         </Pane>
                         <Pane layoutX="470.0" layoutY="128.0" prefHeight="70.0" prefWidth="160.0" styleClass="pane">
                            <children>
-                              <Label layoutX="10.0" layoutY="10.0" text="Valor do erro" />
-                              <TextField fx:id="txErro" layoutX="40.0" layoutY="30.0" prefHeight="30.0" prefWidth="100.0" />
+                              <Label layoutX="5.0" layoutY="5.0" text="Valor do erro" />
+                              <TextField fx:id="txErro" layoutX="50.0" layoutY="25.0" prefHeight="30.0" prefWidth="100.0" />
                            </children>
                         </Pane>
                      </children>
@@ -141,18 +140,6 @@
                       <NumberAxis side="LEFT" />
                     </yAxis>
                   </LineChart>
-               </content>
-            </Tab>
-            <Tab text="Precisão">
-               <content>
-                  <BarChart fx:id="chPrecisao">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </BarChart>
                </content>
             </Tab>
         </tabs>
