@@ -89,7 +89,6 @@ public class CamadaOculta {
     public void setFunc_ati(Func_ativacao func_ati) {
         this.func_ati = func_ati;
     }
-
     //--------------------------CALCULOS----------------------------------------------
     public void calcularNet(double[] entrada, int tp_act) {
         double total;

@@ -67,7 +67,12 @@ public class CarregaDS {
     public int getIsaida() {
         return tpSaidas.size();
     }
-
+    
+        
+    public int getQuantNeu(){
+        return (ientradas + tpSaidas.size()) / 2;
+    }
+    
     public int addDatasetSaida(String saida) {
         boolean flag = true;
         int i = 0;
@@ -213,10 +218,10 @@ public class CarregaDS {
         return lista;
     }
 
-    public void normalizar() {
+    public ArrayList<DataSet> normalizar(ArrayList<DataSet> data) {
         normalizado = true;
         double v;
-        for (DataSet ds : dataset) {
+        for (DataSet ds : data) {
             for (int i = 0; i < ds.getEntrada().size(); i++) {
                 v = ds.getEntrada().get(i);
                 v = (v - menor.get(i)) / (maior.get(i) - menor.get(i));
@@ -230,15 +235,7 @@ public class CarregaDS {
             }
         }
 
-        if (dsTeste != null) {
-            for (DataSet d : dsTeste) {
-                for (int i = 0; i < d.getEntrada().size(); i++) {
-                    v = d.getEntrada().get(i);
-                    d.getEntrada().set(i, (v - menor.get(i) / (maior.get(i) - menor.get(i))));
-                    d.getEntrada().set(i, v);
-                }
-            }
-        }
+        return data;
 
     }
 

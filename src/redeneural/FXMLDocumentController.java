@@ -90,6 +90,8 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextField txErro;
     private String exibe;
+    @FXML
+    private TextField txNeu;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -102,11 +104,11 @@ public class FXMLDocumentController implements Initializable {
         txEntrada.setDisable(true);
         cbTpFunc.getItems().addAll("Linear", "Logística", "Hiperbólica");
         cbTpFunc.getSelectionModel().select(0);
-        txAprendizagem.setText("0.1");
+        txAprendizagem.setText("0.02");
         txItera.setText("25");
         txOculta.setText("1");
         txSaida.setDisable(true);
-        txErro.setText("0.00001");
+        txErro.setText("0.0002");
         txOculta.requestFocus();
 
         graficoE.setTitle("Erro");
@@ -143,6 +145,7 @@ public class FXMLDocumentController implements Initializable {
 
                 txEntrada.setText("" + carrega.getIentradas());
                 txSaida.setText("" + carrega.getIsaida());
+                txNeu.setText("" + carrega.getQuantNeu());
             }
         }
     }
@@ -296,10 +299,6 @@ public class FXMLDocumentController implements Initializable {
         ArrayList<DataSet> ds;
         ArrayList<DataSet> teste;
 
-        if (!carrega.isNormalizado()) {
-            carrega.normalizar();
-        }
-
         if (ckRandon.isSelected()) {
             ds = carrega.randomDS(carrega.getDataset());
 
@@ -313,9 +312,14 @@ public class FXMLDocumentController implements Initializable {
             teste = carrega.getDsTeste();
         }
 
+        if (!carrega.isNormalizado()) {
+            ds = carrega.normalizar(ds);
+            teste = carrega.normalizar(teste);
+        }
+
         pbIteracoes.setProgress(0.0);
         pbTeste.setProgress(0.0);
-        rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
+        rn.iniciar(carrega.getIentradas(), camadas, Integer.parseInt(txNeu.getText()), carrega.getIsaida());
         rn.setTpSaidas(carrega.getTpSaidas());
 
         if (ckFould.isSelected()) {
@@ -374,12 +378,13 @@ public class FXMLDocumentController implements Initializable {
                 double aux;
                 double porc = 0;
                 int camadas = Integer.parseInt(txOculta.getText());
+                int neu = Integer.parseInt(txNeu.getText());
                 boolean flagErro;
                 ArrayList<DataSet> ds, teste;
                 try {
                     for (int j = 0; j < 4; j++) {
                         rn.iniciarLog();
-                        rn.iniciar(carrega.getIentradas(), camadas, carrega.getIsaida());
+                        rn.iniciar(carrega.getIentradas(), camadas, neu, carrega.getIsaida());
                         rn.iniciarTeste();
 
                         flagErro = true;
@@ -410,11 +415,12 @@ public class FXMLDocumentController implements Initializable {
                             pbTeste.setProgress(i / iTeste);
                             Thread.sleep(5);
                         }
+                        rn.setTotalErroK(rn.getRedeErro());
                         pbTeste.setProgress(1.0);
                         Thread.sleep(5);
                         exibe += rn.exibeMatriz() + "\n\n";
                     }
-
+                    exibe += "\nAcurácia media: " + ((rn.getTotalErroK() / 4) * 100);
                     pbTeste.setProgress(1.0);
                     btExibe.setVisible(true);
                     pbIteracoes.setProgress(1.0);

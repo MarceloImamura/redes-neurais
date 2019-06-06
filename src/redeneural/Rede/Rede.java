@@ -10,8 +10,9 @@ public class Rede {
     private ArrayList<Double>[] vetorLog;
     private int[][] mConfusao;
     private double redeErro;
+    private double totalErroK;
     private int ientradas, icamadas, isaida, ineuronioOculto;
-
+    
     public void exibeRede() {
         String text = "";
         int i = 0;
@@ -70,16 +71,16 @@ public class Rede {
             exibe+=" %";
 
         }
-        exibe+="\nErro da rede: "+redeErro;
+        exibe+=String.format("\nErro da rede: %.6f", redeErro);
         return exibe;
     }
     
-    public void iniciar(int ientradas, int icamadas, int saida) {
+    public void iniciar(int ientradas, int icamadas, int ineuronioOculto, int saida) {
         logErro = new ArrayList();
         this.icamadas = icamadas + 1;
         this.ientradas = ientradas;
         this.isaida = saida;
-        this.ineuronioOculto = (ientradas + saida) / 2;
+        this.ineuronioOculto = ineuronioOculto;
 
         rede = new ArrayList();
         CamadaOculta co = new CamadaOculta(ientradas, ineuronioOculto);
@@ -172,7 +173,14 @@ public class Rede {
     public void setTpSaidas(ArrayList<String> tpSaidas) {
         this.tpSaidas = tpSaidas;
     }
-    
+
+    public double getTotalErroK() {
+        return totalErroK;
+    }
+
+    public void setTotalErroK(double totalErroK) {
+        this.totalErroK = totalErroK;
+    }
     
 
     //------------------------BUSCA ETC...-----------------------
