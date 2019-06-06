@@ -46,6 +46,7 @@ public class Rede {
             exibe+="\n";
         }
         porc = (acerto/total)*100;
+        totalErroK += porc;
         exibe+="\nacurácia da rede";
         exibe+=String.format(": %.3f", porc);
         exibe+=" %";

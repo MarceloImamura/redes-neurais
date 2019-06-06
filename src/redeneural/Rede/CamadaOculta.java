@@ -24,9 +24,8 @@ public class CamadaOculta {
         for (int i = 0; i < ineuronios; i++) {
             peso[i] = new double[entrada];
             for (int j = 0; j < entrada; j++) {
-                String v = String.format("%.3f", randon.nextDouble());
-                v = v.replace(",", ".");
-                peso[i][j] = Double.parseDouble(v);
+                
+                peso[i][j] = randon.nextDouble();
                 //aux++;
             }
         }

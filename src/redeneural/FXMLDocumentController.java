@@ -105,10 +105,10 @@ public class FXMLDocumentController implements Initializable {
         cbTpFunc.getItems().addAll("Linear", "Logística", "Hiperbólica");
         cbTpFunc.getSelectionModel().select(0);
         txAprendizagem.setText("0.02");
-        txItera.setText("25");
+        txItera.setText("2000");
         txOculta.setText("1");
         txSaida.setDisable(true);
-        txErro.setText("0.0002");
+        txErro.setText("0.0001");
         txOculta.requestFocus();
 
         graficoE.setTitle("Erro");
@@ -381,6 +381,7 @@ public class FXMLDocumentController implements Initializable {
                 int neu = Integer.parseInt(txNeu.getText());
                 boolean flagErro;
                 ArrayList<DataSet> ds, teste;
+               rn.setTotalErroK(0);
                 try {
                     for (int j = 0; j < 4; j++) {
                         rn.iniciarLog();
@@ -415,12 +416,11 @@ public class FXMLDocumentController implements Initializable {
                             pbTeste.setProgress(i / iTeste);
                             Thread.sleep(5);
                         }
-                        rn.setTotalErroK(rn.getRedeErro());
                         pbTeste.setProgress(1.0);
                         Thread.sleep(5);
                         exibe += rn.exibeMatriz() + "\n\n";
                     }
-                    exibe += "\nAcurácia media: " + ((rn.getTotalErroK() / 4) * 100);
+                    exibe += "\nAcurácia media: " + (rn.getTotalErroK() / 4)+" %";
                     pbTeste.setProgress(1.0);
                     btExibe.setVisible(true);
                     pbIteracoes.setProgress(1.0);
